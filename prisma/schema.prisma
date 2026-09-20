@@ -1,0 +1,221 @@
+// Prisma schema for Safiluxe Cleaning Solutions
+// PostgreSQL — managed DB (Neon / Supabase / RDS) via DATABASE_URL
+// Run: npx prisma migrate dev --name init | npx prisma db seed
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum QuoteStatus {
+  NEW
+  CONTACTED
+  SITE_VISIT_SCHEDULED
+  QUOTE_SENT
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  ARCHIVED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  RESCHEDULED
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([email])
+}
+
+model Service {
+  id               String        @id @default(cuid())
+  name             String
+  slug             String        @unique
+  shortDescription String
+  description      String        @db.Text
+  features         String[]      @default([])
+  priceHint        String?
+  featuredImage    String?
+  gallery          String[]      @default([])
+  active           Boolean       @default(true)
+  featured         Boolean       @default(false)
+  sortOrder        Int           @default(0)
+  seoTitle         String?
+  seoDescription   String?
+  faqs             Json?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  quotes           QuoteRequest[]
+  bookings         Booking[]
+
+  @@index([slug])
+  @@index([active, featured])
+}
+
+model QuoteRequest {
+  id              String      @id @default(cuid())
+  referenceNumber String      @unique
+  fullName        String
+  phone           String
+  email           String?
+  serviceId       String?
+  service         Service?    @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  serviceName     String?
+  propertyType    String?
+  location        String
+  rooms           String?
+  propertySize    String?
+  preferredDate   DateTime?
+  frequency       String      @default("one-time")
+  message         String?     @db.Text
+  images          String[]    @default([])
+  status          QuoteStatus @default(NEW)
+  notes           String?     @db.Text
+  source          String?     @default("website")
+  contactedAt     DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([status])
+  @@index([serviceId])
+  @@index([createdAt])
+  @@index([referenceNumber])
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  referenceNumber String        @unique
+  customerName    String
+  phone           String
+  email           String?
+  serviceId       String?
+  service         Service?      @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  serviceName     String?
+  date            DateTime
+  time            String?
+  location        String
+  propertyType    String?
+  frequency       String        @default("one-time")
+  status          BookingStatus @default(PENDING)
+  assignedTeam    String?
+  notes           String?       @db.Text
+  // payment-ready fields (online payments can be added later)
+  amountCents     Int?
+  currency        String?       @default("KES")
+  paymentStatus   String?       @default("UNPAID")
+  paymentRef      String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([status])
+  @@index([date])
+  @@index([serviceId])
+  @@index([referenceNumber])
+}
+
+model Testimonial {
+  id           String   @id @default(cuid())
+  customerName String
+  location     String?
+  rating       Int      @default(5)
+  review       String   @db.Text
+  service      String?
+  image        String?
+  featured     Boolean  @default(false)
+  published    Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  @@index([published, featured])
+}
+
+model GalleryItem {
+  id          String   @id @default(cuid())
+  image       String
+  beforeImage String?
+  afterImage  String?
+  category    String   @default("residential")
+  caption     String?
+  sortOrder   Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@index([category, published])
+}
+
+model BlogPost {
+  id             String     @id @default(cuid())
+  title          String
+  slug           String     @unique
+  excerpt        String?
+  content        String     @db.Text
+  featuredImage  String?
+  status         PostStatus @default(DRAFT)
+  category       String?    @default("Cleaning Tips")
+  tags           String[]   @default([])
+  seoTitle       String?
+  seoDescription String?
+  publishedAt    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([slug])
+  @@index([status, publishedAt])
+}
+
+model ServiceArea {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  description    String?  @db.Text
+  active         Boolean  @default(true)
+  featured       Boolean  @default(false)
+  seoTitle       String?
+  seoDescription String?
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([slug])
+  @@index([active])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  subject   String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([read, createdAt])
+}
