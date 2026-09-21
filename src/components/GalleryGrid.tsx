@@ -22,7 +22,7 @@ export default function GalleryGrid() {
         {items.map((g, i) => (
           <figure key={i} className="card-shadow group overflow-hidden rounded-2xl border border-ink-900/[0.07] bg-white">
             <div className="relative h-56 overflow-hidden">
-              <Image src={g.image} alt={g.caption} fill sizes="(max-width:768px) 100vw, 25vw" className="object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+              <Image src={g.image} alt={g.caption} fill sizes="(max-width:768px) 100vw, 25vw" quality={85} className="object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
             </div>
             <figcaption className="flex items-center justify-between gap-2 px-4 py-3">
               <span className="text-[13px] font-medium text-ink-700">{g.caption}</span>

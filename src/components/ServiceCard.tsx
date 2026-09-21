@@ -10,7 +10,7 @@ export default function ServiceCard({ service }: { service: ServiceSeed }) {
       className="card-shadow group flex flex-col overflow-hidden rounded-2xl border border-ink-900/[0.07] bg-white transition duration-300 hover:-translate-y-1"
     >
       <div className="relative h-48 overflow-hidden">
-        <Image src={service.image} alt={service.name} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+        <Image src={service.image} alt={service.name} fill sizes="(max-width:768px) 100vw, 33vw" quality={85} className="object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
         <span className="absolute top-3 left-3 rounded-full bg-pine-950/85 px-3 py-1 text-[11px] font-semibold text-gold-200 backdrop-blur">
           {service.priceHint || "Free quote"}
         </span>

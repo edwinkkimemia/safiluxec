@@ -6,7 +6,7 @@ export default function PageHero({ eyebrow, title, copy, crumbs, image = "/clean
   return (
     <section className="relative overflow-hidden bg-pine-950">
       <div className="absolute inset-0" aria-hidden="true">
-        <Image src={image} alt="" fill sizes="100vw" className="object-cover opacity-60" />
+        <Image src={image} alt="" fill sizes="100vw" quality={95} priority className="object-cover opacity-60" style={{ objectPosition: "center 35%" }} />
         <div className="absolute inset-0 bg-gradient-to-r from-pine-950 via-pine-950/60 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-pine-950/40 via-transparent to-transparent" />
       </div>
