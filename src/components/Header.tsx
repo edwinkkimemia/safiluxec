@@ -8,7 +8,6 @@ import WhatsAppIcon from "./WhatsAppIcon";
 import { siteConfig, whatsappLink, WHATSAPP_MESSAGES } from "@/lib/site";
 
 const links = [
-  { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/residential", label: "Residential" },
   { href: "/commercial", label: "Commercial" },
@@ -45,7 +44,7 @@ export default function Header() {
       </div>
 
       <header className={`sticky top-0 z-50 border-b bg-cream-50/90 backdrop-blur-md transition-shadow ${scrolled ? "border-ink-900/10 shadow-[0_8px_30px_-12px_rgba(14,59,51,0.25)]" : "border-transparent"}`}>
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-6 py-3 sm:px-8 lg:px-10">
           <Link href="/" className="flex items-center" aria-label="Safiluxe home">
             <Image src="/logo.png" alt="SafiLuxe Cleaning Solutions" width={928} height={300} className="h-9 w-auto sm:h-10" priority />
           </Link>

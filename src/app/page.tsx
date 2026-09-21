@@ -42,8 +42,9 @@ export default function HomePage() {
       {/* HERO */}
       <section className="relative overflow-hidden bg-pine-950">
         <div className="absolute inset-0">
-          <Image src={IMAGES.hero} alt="SafiLuxe cleaning professional mopping a bright lobby" fill priority sizes="100vw" className="object-cover opacity-50" />
-          <div className="absolute inset-0 bg-gradient-to-r from-pine-950 via-pine-950/70 to-pine-950/15" />
+          <Image src={IMAGES.hero} alt="SafiLuxe cleaning professional mopping a bright lobby" fill priority sizes="100vw" className="object-cover opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-pine-950 via-pine-950/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-pine-950/35 via-transparent to-transparent" />
         </div>
         <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
           <div className="flex flex-col justify-center">
